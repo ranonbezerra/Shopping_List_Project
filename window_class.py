@@ -1,5 +1,6 @@
 from tkinter import *
-from tkinter import filedialog
+import traceback
+import logging
 import os
 
 
@@ -9,10 +10,21 @@ class Window:
 
         self.height = height
         self.width = width
+
+        self.window = Tk()
         self.path = os.path.dirname(__file__)
+
+        self.background_image_path = None
+        self.background_image_size = None
+        
+        self.number_of_buttons = None
+        self.buttons_paths = None
+        self.buttons_places = None
+        self.buttons_sizes = None
+        self.butons_functions = None
         self.buttons = []
         self.buttons_images = []
-        self.window = Tk()
+        
 
     def create_window(self, title):
 
@@ -37,29 +49,43 @@ class Window:
 
     def add_window_background(self):
 
-        self.canvas.background = PhotoImage(file = self.path + self.background_image_path)
-        background_x, background_y = self.background_image_size
-        print(background_x)
-        self.background = self.canvas.create_image(
-            background_x, background_y,
-            image=self.canvas.background)
-        
-    def add_buttons_to_window(self, button_function, button_number):
-        
-            button_x, button_y = self.buttons_places[button_number]
-            button_width, button_height = self.buttons_sizes[button_number]
+        try:
+            self.canvas.background = PhotoImage(file = self.path + self.background_image_path)
+            background_x, background_y = self.background_image_size
+            print(background_x)
+            self.background = self.canvas.create_image(
+                background_x, background_y,
+                image=self.canvas.background)
+            
+        except Exception:
+            print(traceback.print_exc())
+            print('Attributes regarding background image size and path might not be defined.')
 
-            self.buttons_images.append(PhotoImage(file = self.path + self.buttons_paths[button_number]))
-            self.buttons.append(Button(
-                image = self.buttons_images[-1],
-                borderwidth = 0,
-                highlightthickness = 0,
-                command = button_function,
-                relief = "flat"))
+    def add_buttons_to_window(self):
+            
+        try:
 
-            self.buttons[-1].place(
-                x = button_x, y = button_y,
-                width = button_width,height = button_height)
+            for button_number in range(self.number_of_buttons):
+        
+                button_x, button_y = self.buttons_places[button_number]
+                button_width, button_height = self.buttons_sizes[button_number]
+
+                self.buttons_images.append(PhotoImage(file = self.path + self.buttons_paths[button_number]))
+                self.buttons.append(Button(image = self.buttons_images[-1],borderwidth = 0,highlightthickness = 0,
+                                            command = self.buttons_functions[button_number],relief = "flat"))
+
+                self.buttons[-1].place(x = button_x, y = button_y,width = button_width,height = button_height)
+
+        except Exception:
+            print(traceback.print_exc())
+            print('Attributes regarding number of buttons, size, place and images path might not be defined.')
+
+if __name__ == '__main__':
+     
+    print('Executed as main')
+    print('-------------------------------------------------------------')
+    oi = Window(400,700)
+    oi.add_window_background()
 
 #COPY OF OLD VERSION FOR REFERENCE
 

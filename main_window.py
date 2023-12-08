@@ -6,6 +6,7 @@ class MainWindow(Window):
     def __init__(self):
 
         super().__init__(400,700)
+
         self.number_of_buttons = 3
         self.buttons_paths = [r"\main_window_images\img0.png",
                               r"\main_window_images\img1.png",
@@ -16,6 +17,10 @@ class MainWindow(Window):
         self.buttons_sizes = [(192, 62),
                               (192, 62),
                               (192, 62)]
+        self.buttons_functions = [lambda: print('Button 1'),
+                                  lambda: print('Button 2'),
+                                  lambda: print('Button 3')]
+
         self.background_image_path = r"\main_window_images\background.png"
         self.background_image_size = (335.0,200.0)
         
@@ -23,14 +28,7 @@ class MainWindow(Window):
 
         self.create_window('Shopping List App - by Ranon Bezerra')
         self.add_window_background()
-        self.add_main_window_buttons()
-
-    def add_main_window_buttons(self):
-
-        #CONTINUE FROM HERE (December 07, 2023)
-
-        for button_number in range(self.number_of_buttons):
-            self.add_buttons_to_window(lambda: print('Botao {}'.format(button_number)),button_number)
+        self.add_buttons_to_window()
 
 # def btn_nova_lista(window):
 #     dicio = {}
