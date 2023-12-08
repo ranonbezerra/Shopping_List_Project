@@ -27,6 +27,8 @@ class MainWindow(Window):
 
     def add_main_window_buttons(self):
 
+        #CONTINUE FROM HERE (December 07, 2023)
+
         for button_number in range(self.number_of_buttons):
             self.add_buttons_to_window(lambda: print('Botao {}'.format(button_number)),button_number)
 
