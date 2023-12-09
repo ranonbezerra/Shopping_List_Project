@@ -52,7 +52,7 @@ class Window:
         try:
             self.canvas.background = PhotoImage(file = self.path + self.background_image_path)
             background_x, background_y = self.background_image_size
-            print(background_x)
+
             self.background = self.canvas.create_image(
                 background_x, background_y,
                 image=self.canvas.background)
@@ -80,12 +80,16 @@ class Window:
             print(traceback.print_exc())
             print('Attributes regarding number of buttons, size, place and images path might not be defined.')
 
+    def exit_button_click(self):
+
+        self.window.destroy()
+
 if __name__ == '__main__':
      
     print('Executed as main')
     print('-------------------------------------------------------------')
-    oi = Window(400,700)
-    oi.add_window_background()
+    test = Window(400,700)
+    test.add_window_background()
 
 #COPY OF OLD VERSION FOR REFERENCE
 
