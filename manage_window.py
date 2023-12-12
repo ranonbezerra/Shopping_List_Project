@@ -63,12 +63,14 @@ class ManageListWindow(Window):
             title = 'Error!'
             ctypes.windll.user32.MessageBoxW(0, text, title, 0)
 
+
 def execute_manage_list_window(json_data = {}):
 
     manage_window = ManageListWindow(json_data)
     manage_window.create_manage_list_window()
     manage_window.window.resizable(False, False)
     manage_window.window.mainloop()
+
 
 if __name__ == '__main__':
 

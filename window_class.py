@@ -114,7 +114,11 @@ class Window:
         self.window.destroy()
 
     def action_window(self, text, title):
-        ctypes.windll.user32.MessageBoxW(0, text, title, 0)
+        return ctypes.windll.user32.MessageBoxW(0, text, title, 0)
+
+    def amount_not_intenger_texts(self):
+        return ('The amount must be an intenger!', 'Error!')
+
 
 if __name__ == '__main__':
      

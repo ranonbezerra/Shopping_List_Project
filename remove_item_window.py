@@ -1,6 +1,4 @@
 from tkinter import *
-import os
-import ctypes
 from window_class import Window
 
 class RemoveItemWindow(Window):
@@ -70,9 +68,6 @@ class RemoveItemWindow(Window):
 
     def item_not_found_texts(self):
         return ('Item not found!', 'Error!')
-    
-    def amount_not_intenger_texts(self):
-        return ('The amount must be an intenger!', 'Error!')
 
     def create_remove_item_window(self):
             
@@ -81,12 +76,14 @@ class RemoveItemWindow(Window):
         self.add_buttons_to_window()
         self.add_entries_to_window()
 
+
 def execute_remove_item_window(json_data = {}):
 
     remove_item_window = RemoveItemWindow(json_data)
     remove_item_window.create_remove_item_window()
     remove_item_window.window.resizable(False, False)
     remove_item_window.window.mainloop()
+
 
 if __name__ == '__main__':
 

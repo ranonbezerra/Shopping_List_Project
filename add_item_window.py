@@ -40,8 +40,7 @@ class AddItemWindow(Window):
             else:
                 action_window_text, action_window_title = self.increment_item_in_database_texts(item_entry, amount_entry)
         else:
-            action_window_text  = 'The amount must be an intenger!'
-            action_window_title = 'User typing error'
+            action_window_text, action_window_title = self.amount_not_intenger_texts()
 
         return action_window_text, action_window_title
 
@@ -73,12 +72,14 @@ class AddItemWindow(Window):
         self.add_buttons_to_window()
         self.add_entries_to_window()
 
+
 def execute_add_item_window(json_data = {}):
 
     add_item_window = AddItemWindow(json_data)
     add_item_window.create_add_item_window()
     add_item_window.window.resizable(False, False)
     add_item_window.window.mainloop()
+
 
 if __name__ == '__main__':
 
