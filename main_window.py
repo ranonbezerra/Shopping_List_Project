@@ -1,6 +1,9 @@
 from window_class import Window
-from manage_window import *
+from manage_window import execute_manage_list_window
+from tkinter import filedialog
 from tkinter import *
+import os
+import json
 
 class MainWindow(Window):
 
@@ -42,7 +45,8 @@ class MainWindow(Window):
 
         self.window.destroy()
 
-        execute_manage_window()
+        json_data = {}
+        execute_manage_list_window(json_data)
 
         execute_main_window()
 
@@ -53,7 +57,7 @@ class MainWindow(Window):
         if file_str:
             with open(file_str) as file:
                 self.window.destroy()
-                execute_manage_window(json.load(file))
+                execute_manage_list_window(json.load(file))
 
 def execute_main_window():
 

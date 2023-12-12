@@ -1,19 +1,18 @@
 from tkinter import *
-from tkinter import filedialog
 import json
-from window_add_item import window_add_item
+from add_item_window import execute_add_item_window
 from window_remove_item import window_remove_item
 from window_view_list import window_view_list
 import ctypes
 import os
-from window_class import *
+from window_class import Window
 
+class ManageListWindow(Window):
 
-class ManageWindow(Window):
-
-    def __init__(self):
+    def __init__(self, json_data = {}):
         super().__init__(400,700)
 
+        self.json_data = json_data
         self.number_of_buttons = 5
         self.buttons_paths = [r"\manage_window_images\img0.png",
                               r"\manage_window_images\img1.png",
@@ -30,35 +29,37 @@ class ManageWindow(Window):
                               (192, 62),
                               (192, 62),
                               (192, 62)]
-        self.buttons_functions = [lambda: print('Button 1'),
-                                  lambda: print('Button 2'),
-                                  lambda: print('Button 3'),
-                                  lambda: print('Button 4'),
+        self.buttons_functions = [lambda: self.add_item_button_click(),
+                                  lambda: print('Button 2'), #self.remove_item_button_click(json_data),
+                                  lambda: print('Button 3'), #self.view_list_button_click(json_data),
+                                  lambda: print('Button 4'), #self.save_and_exit_button_click(json_data),
                                   lambda: self.exit_button_click()]
 
         self.background_image_path = r"\manage_window_images\background.png"
         self.background_image_size = (366.5,200.0)
 
-    def create_manage_window(self, json_data):
-
+    def create_manage_list_window(self):
+            
         self.create_window('Managing list...')
         self.add_window_background()
         self.add_buttons_to_window()
 
-def execute_manage_window(json_data = {}):
+    def add_item_button_click(self):
 
-    manage_window = ManageWindow()
-    manage_window.create_manage_window(json_data)
+        self.window.destroy()
+        execute_add_item_window(self.json_data)
+        execute_manage_list_window(self.json_data)
+
+def execute_manage_list_window(json_data = {}):
+
+    manage_window = ManageListWindow(json_data)
+    manage_window.create_manage_list_window()
     manage_window.window.resizable(False, False)
     manage_window.window.mainloop()
 
 if __name__ == '__main__':
 
-    execute_manage_window()
-
-
-# def btn_clicked():
-#     print("Button Clicked")
+    execute_manage_list_window()
 
 # def btn_add_item(window_ger, dicio):
 
