@@ -1,7 +1,7 @@
 from tkinter import *
 import json
 from add_item_window import execute_add_item_window
-from window_remove_item import window_remove_item
+from remove_item_window import execute_remove_item_window
 from window_view_list import window_view_list
 import ctypes
 import os
@@ -30,7 +30,7 @@ class ManageListWindow(Window):
                               (192, 62),
                               (192, 62)]
         self.buttons_functions = [lambda: self.add_item_button_click(),
-                                  lambda: print('Button 2'), #self.remove_item_button_click(json_data),
+                                  lambda: self.remove_item_button_click(), #self.remove_item_button_click(json_data),
                                   lambda: print('Button 3'), #self.view_list_button_click(json_data),
                                   lambda: print('Button 4'), #self.save_and_exit_button_click(json_data),
                                   lambda: self.exit_button_click()]
@@ -48,7 +48,20 @@ class ManageListWindow(Window):
 
         self.window.destroy()
         execute_add_item_window(self.json_data)
+        print(self.json_data)
         execute_manage_list_window(self.json_data)
+
+    def remove_item_button_click(self):
+
+        if len(self.json_data.keys()):
+            self.window.destroy()
+            execute_remove_item_window(self.json_data)
+            print(self.json_data)
+            execute_manage_list_window(self.json_data)
+        else:
+            text  = 'Your shopping list is empty!'
+            title = 'Error!'
+            ctypes.windll.user32.MessageBoxW(0, text, title, 0)
 
 def execute_manage_list_window(json_data = {}):
 
@@ -60,23 +73,6 @@ def execute_manage_list_window(json_data = {}):
 if __name__ == '__main__':
 
     execute_manage_list_window()
-
-# def btn_add_item(window_ger, dicio):
-
-#     window_ger.destroy()
-#     window_add_item(dicio)
-#     window_gerenciando(dicio)
-    
-# def btn_remove_item(window_ger, dicio):
-
-#     if len(dicio.keys()):
-#         window_ger.destroy()
-#         window_remove_item(dicio)
-#         window_gerenciando(dicio)
-#     else:
-#         text  = 'Sua lista está vazia!'
-#         title = 'Erro!'
-#         ctypes.windll.user32.MessageBoxW(0, text, title, 0)
 
 # def btn_view_list(window_ger,dicio):
 
@@ -93,9 +89,6 @@ if __name__ == '__main__':
 #         return
 #     with open (file_str, 'w') as file:
 #         json.dump(dicio, file)
-#     window.destroy()
-
-# def btn_exit(window):
 #     window.destroy()
 
 # def window_gerenciando(dicio={}):

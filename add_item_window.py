@@ -10,7 +10,7 @@ class AddItemWindow(Window):
         self.json_data = json_data
 
         self.number_of_buttons = 1
-        self.buttons_paths = [r"\window_add_item_images\img0.png"]
+        self.buttons_paths = [r"\add_item_window_images\img0.png"]
         self.buttons_places = [(79, 127)]
         self.buttons_sizes = [(192, 62)]        
         self.buttons_functions = [lambda: self.add_item_to_database_button_click(self.entries[0].get(),self.entries[1].get())]
@@ -18,8 +18,8 @@ class AddItemWindow(Window):
         
 
         self.number_of_entries = 2
-        self.entries_paths = [r"\window_add_item_images\img_textBox0.png",
-                              r"\window_add_item_images\img_textBox1.png"]
+        self.entries_paths = [r"\add_item_window_images\img_textBox0.png",
+                              r"\add_item_window_images\img_textBox1.png"]
         self.entries_background_sizes = [(196.0, 35.0),
                                          (215.0, 85.0)]
         self.entries_places = [(53, 23),
@@ -27,7 +27,7 @@ class AddItemWindow(Window):
         self.entries_sizes = [(286, 22),
                               (248, 22)]
 
-        self.background_image_path = r"\window_add_item_images\background.png"
+        self.background_image_path = r"\add_item_window_images\background.png"
         self.background_image_size = (175.0,100.0)
 
     def add_item_to_database_button_click(self, item_entry, amount_entry):
