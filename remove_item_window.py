@@ -75,14 +75,13 @@ class RemoveItemWindow(Window):
         self.add_window_background()
         self.add_buttons_to_window()
         self.add_entries_to_window()
+        self.set_window_final_parameters()
 
 
 def execute_remove_item_window(json_data = {}):
 
     remove_item_window = RemoveItemWindow(json_data)
     remove_item_window.create_remove_item_window()
-    remove_item_window.window.resizable(False, False)
-    remove_item_window.window.mainloop()
 
 
 if __name__ == '__main__':

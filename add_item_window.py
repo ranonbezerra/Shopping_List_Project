@@ -36,14 +36,17 @@ class AddItemWindow(Window):
     def decide_action_to_take(self, item_entry, amount_entry):
         if self.amount_correctly_digited(amount_entry):
             if self.new_item_to_database(item_entry):
+                self.add_item_to_database(item_entry, amount_entry)
                 action_window_text, action_window_title = self.add_item_to_database_texts(item_entry, amount_entry)
-            else:
+            elif self.user_wants_to_increment(item_entry, amount_entry):
+                self.increment_item_in_database(item_entry, amount_entry)
                 action_window_text, action_window_title = self.increment_item_in_database_texts(item_entry, amount_entry)
+            else:
+                action_window_text, action_window_title = self.no_changes_texts()
         else:
             action_window_text, action_window_title = self.amount_not_intenger_texts()
 
         return action_window_text, action_window_title
-
 
     def amount_correctly_digited(self, amount_entry):
         return amount_entry.isdigit()
@@ -51,14 +54,20 @@ class AddItemWindow(Window):
     def new_item_to_database(self, item_entry):
         return item_entry not in self.json_data.keys()
     
-    def add_item_to_database_texts(self,item_entry, amount_entry):
+    def add_item_to_database(self, item_entry, amount_entry):
         self.json_data[item_entry] = int(amount_entry)
+    
+    def add_item_to_database_texts(self,item_entry, amount_entry):
         return ('Item successfully added! Item: {}, Amount: {}'.format(item_entry, self.json_data[item_entry]),'Item registered!')
     
+    def increment_item_in_database(self, item_entry, amount_entry):
+        self.json_data[item_entry] += int(amount_entry)
+    
     def increment_item_in_database_texts(self, item_entry, amount_entry):
-        if self.user_wants_to_increment(item_entry, amount_entry):
-            self.json_data[item_entry] += int(amount_entry)
             return ('Item {} successfully incremented! Current amount: {}'.format(item_entry, self.json_data[item_entry]),'Item incremented!')
+    
+    def no_changes_texts(self):
+        return ('No changes made to the list', 'No changes!')
 
     def user_wants_to_increment(self,item_entry, amount_entry):
         text  = 'Item already registered! Do you wish to increment the value ({}) to the item {}? Current amount: {}'.format(amount_entry,item_entry, self.json_data[item_entry])
@@ -71,15 +80,13 @@ class AddItemWindow(Window):
         self.add_window_background()
         self.add_buttons_to_window()
         self.add_entries_to_window()
+        self.set_window_final_parameters()
 
 
 def execute_add_item_window(json_data = {}):
 
     add_item_window = AddItemWindow(json_data)
     add_item_window.create_add_item_window()
-    add_item_window.window.resizable(False, False)
-    add_item_window.window.mainloop()
-
 
 if __name__ == '__main__':
 

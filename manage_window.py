@@ -2,7 +2,7 @@ from tkinter import *
 import json
 from add_item_window import execute_add_item_window
 from remove_item_window import execute_remove_item_window
-from window_view_list import window_view_list
+from view_list_window import execute_view_list_window
 import ctypes
 import os
 from window_class import Window
@@ -31,7 +31,7 @@ class ManageListWindow(Window):
                               (192, 62)]
         self.buttons_functions = [lambda: self.add_item_button_click(),
                                   lambda: self.remove_item_button_click(), #self.remove_item_button_click(json_data),
-                                  lambda: print('Button 3'), #self.view_list_button_click(json_data),
+                                  lambda: self.view_list_button_click(), #self.view_list_button_click(json_data),
                                   lambda: print('Button 4'), #self.save_and_exit_button_click(json_data),
                                   lambda: self.exit_button_click()]
 
@@ -43,6 +43,7 @@ class ManageListWindow(Window):
         self.create_window('Managing list...')
         self.add_window_background()
         self.add_buttons_to_window()
+        self.set_window_final_parameters()
 
     def add_item_button_click(self):
 
@@ -62,25 +63,23 @@ class ManageListWindow(Window):
             text  = 'Your shopping list is empty!'
             title = 'Error!'
             ctypes.windll.user32.MessageBoxW(0, text, title, 0)
+            
+    def view_list_button_click(self):
+
+        self.window.destroy()
+        execute_view_list_window(self.json_data)
+        execute_manage_list_window(self.json_data)
 
 
 def execute_manage_list_window(json_data = {}):
 
     manage_window = ManageListWindow(json_data)
     manage_window.create_manage_list_window()
-    manage_window.window.resizable(False, False)
-    manage_window.window.mainloop()
 
 
 if __name__ == '__main__':
 
     execute_manage_list_window()
-
-# def btn_view_list(window_ger,dicio):
-
-#     window_ger.destroy()
-#     window_view_list(dicio)
-#     window_gerenciando(dicio)
 
 # def btn_save_and_exit(window,dicio):
 #     file_str = filedialog.asksaveasfilename(initialdir=os.path.dirname(__file__),

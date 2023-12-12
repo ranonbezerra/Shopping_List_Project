@@ -28,18 +28,12 @@ class MainWindow(Window):
         self.background_image_path = r"\main_window_images\background.png"
         self.background_image_size = (335.0,200.0)
 
-    def execute_main_window():
-
-        main_window = MainWindow()
-        main_window.create_main_window()
-        main_window.window.resizable(False, False)
-        main_window.window.mainloop()
-
     def create_main_window(self):
 
         self.create_window('Shopping List App - by Ranon Bezerra')
         self.add_window_background()
         self.add_buttons_to_window()
+        self.set_window_final_parameters()
 
     def new_list_button_click(self):
 
@@ -59,13 +53,12 @@ class MainWindow(Window):
                 self.window.destroy()
                 execute_manage_list_window(json.load(file))
 
+
 def execute_main_window():
 
     main_window = MainWindow()
     main_window.create_main_window()
-    main_window.window.resizable(False, False)
-    main_window.window.mainloop()
-
+    
 
 if __name__ == '__main__':
 
