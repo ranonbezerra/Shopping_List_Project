@@ -15,8 +15,6 @@ class AddItemWindow(Window):
         self.buttons_sizes = [(192, 62)]        
         self.buttons_functions = [lambda: self.add_item_to_database_button_click(self.entries[0].get(),self.entries[1].get())]
 
-        
-
         self.number_of_entries = 2
         self.entries_paths = [r"\add_item_window_images\img_textBox0.png",
                               r"\add_item_window_images\img_textBox1.png"]
@@ -32,25 +30,42 @@ class AddItemWindow(Window):
 
     def add_item_to_database_button_click(self, item_entry, amount_entry):
 
-        if amount_entry.isdigit() and item_entry not in self.json_data.keys():
-            self.json_data[item_entry] = int(amount_entry)
-            text  = 'Item successfully added! Item: {}, Amount: {}'.format(item_entry, self.json_data[item_entry])
-            title = 'Item registered!'
-            
-        elif item_entry in self.json_data.keys():
-            text  = 'Item already registered! Do you wish to increment the value ({}) to the item {}? Current amount: {}'.format(amount_entry,item_entry, self.json_data[item_entry])
-            title = 'Item already registered!'
-            if 1 == ctypes.windll.user32.MessageBoxW(0, text, title, 1):
-                self.json_data[item_entry] += int(amount_entry)
-                text  = 'Item {} successfully incremented! Current amount: {}'.format(item_entry, self.json_data[item_entry])
-                title = 'Item incremented!'
+        action_window_text, action_window_title = self.decide_action_to_take(item_entry, amount_entry)
+        self.action_window(action_window_text,action_window_title)
 
+    def decide_action_to_take(self, item_entry, amount_entry):
+        if self.amount_correctly_digited(amount_entry):
+            if self.new_item_to_database(item_entry):
+                action_window_text, action_window_title = self.add_item_to_database_texts(item_entry, amount_entry)
+            else:
+                action_window_text, action_window_title = self.increment_item_in_database_texts(item_entry, amount_entry)
         else:
-            text  = 'The amount must be an intenger!'
-            title = 'User typing error'
+            action_window_text  = 'The amount must be an intenger!'
+            action_window_title = 'User typing error'
 
-        ctypes.windll.user32.MessageBoxW(0, text, title, 0)
+        return action_window_text, action_window_title
 
+
+    def amount_correctly_digited(self, amount_entry):
+        return amount_entry.isdigit()
+    
+    def new_item_to_database(self, item_entry):
+        return item_entry not in self.json_data.keys()
+    
+    def add_item_to_database_texts(self,item_entry, amount_entry):
+        self.json_data[item_entry] = int(amount_entry)
+        return ('Item successfully added! Item: {}, Amount: {}'.format(item_entry, self.json_data[item_entry]),'Item registered!')
+    
+    def increment_item_in_database_texts(self, item_entry, amount_entry):
+        if self.user_wants_to_increment(item_entry, amount_entry):
+            self.json_data[item_entry] += int(amount_entry)
+            return ('Item {} successfully incremented! Current amount: {}'.format(item_entry, self.json_data[item_entry]),'Item incremented!')
+
+    def user_wants_to_increment(self,item_entry, amount_entry):
+        text  = 'Item already registered! Do you wish to increment the value ({}) to the item {}? Current amount: {}'.format(amount_entry,item_entry, self.json_data[item_entry])
+        title = 'Item already registered!'
+        return 1 == ctypes.windll.user32.MessageBoxW(0, text, title, 1)
+    
     def create_add_item_window(self):
             
         self.create_window('Adding item to the list...')

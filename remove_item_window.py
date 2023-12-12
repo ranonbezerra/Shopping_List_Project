@@ -30,27 +30,49 @@ class RemoveItemWindow(Window):
         self.background_image_size = (175.0,100.0)
 
     def remove_item_from_database_button_click(self, item_entry, amount_entry):
+        action_window_text, action_window_title = self.decide_action_to_take(item_entry, amount_entry)
+        self.action_window(action_window_text,action_window_title)
 
-        if amount_entry.isdigit() and item_entry in self.json_data.keys():
-            if int(amount_entry) <= self.json_data[item_entry]:
-                self.json_data[item_entry] = self.json_data[item_entry] - int(amount_entry)
-                text  = '{} successfully removed! Current amount: {}'.format(item_entry, self.json_data[item_entry])
-                title = 'Item removed!'
-                if self.json_data[item_entry] == 0:
-                    del self.json_data[item_entry]
+    def decide_action_to_take(self, item_entry, amount_entry):
+        if self.amount_correctly_digited(amount_entry):
+            if self.item_in_database(item_entry):
+                if self.amount_to_remove_too_big(item_entry, amount_entry):
+                    action_window_text, action_window_title = self.wrong_amount_texts(item_entry, amount_entry)
+                else:
+                    action_window_text, action_window_title = self.remove_item_from_database_texts(item_entry, amount_entry) 
             else:
-                text  = 'Item {} with current amount ({}) smaller than the amount to be removed ({})! Removal must be of value smaller or equal to the current amount!'.format(item_entry, self.json_data[item_entry], amount_entry)
-                title = 'Item removed!'
-                
-        elif item_entry not in self.json_data.keys():
-            text  = 'Item not found!'
-            title = 'Error!'
-
+                action_window_text, action_window_title = self.item_not_found_texts()
         else:
-            text  = 'The amount must be an intenger!'
-            title = 'User typing error'
-            
-        ctypes.windll.user32.MessageBoxW(0, text, title, 0)
+            action_window_text, action_window_title = self.amount_not_intenger_texts()
+
+        return action_window_text, action_window_title
+
+    def amount_correctly_digited(self, amount_entry):
+        return amount_entry.isdigit()
+    
+    def item_in_database(self, item_entry):
+        return item_entry in self.json_data.keys()
+    
+    def amount_to_remove_too_big(self, item_entry, amount_entry):
+        return int(amount_entry) > self.json_data[item_entry]
+    
+    def wrong_amount_texts(self, item_entry, amount_entry):
+        action_window_text  = 'Item {} with current amount ({}) smaller than the amount to be removed ({})! Removal must be of value smaller or equal to the current amount!'.format(item_entry, self.json_data[item_entry], amount_entry)
+        action_window_title = 'Item not removed!'
+        return action_window_text, action_window_title
+    
+    def remove_item_from_database_texts(self,item_entry, amount_entry):
+        self.json_data[item_entry] = self.json_data[item_entry] - int(amount_entry)
+        if self.json_data[item_entry] == 0:
+            del self.json_data[item_entry]
+            return ('{} successfully removed! Current amount: {}'.format(item_entry, 0), 'Item removed!')
+        return ('{} successfully removed! Current amount: {}'.format(item_entry, self.json_data[item_entry]), 'Item removed!')
+
+    def item_not_found_texts(self):
+        return ('Item not found!', 'Error!')
+    
+    def amount_not_intenger_texts(self):
+        return ('The amount must be an intenger!', 'Error!')
 
     def create_remove_item_window(self):
             

@@ -1,5 +1,6 @@
 from tkinter import *
 import traceback
+import ctypes
 import os
 
 
@@ -110,8 +111,10 @@ class Window:
             print('Attributes regarding the entries might not be defined.')
 
     def exit_button_click(self):
-
         self.window.destroy()
+
+    def action_window(self, text, title):
+        ctypes.windll.user32.MessageBoxW(0, text, title, 0)
 
 if __name__ == '__main__':
      
