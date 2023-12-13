@@ -1,5 +1,4 @@
 from tkinter import *
-
 import traceback
 import ctypes
 import os

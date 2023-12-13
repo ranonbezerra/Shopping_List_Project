@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import filedialog
 import json
 from add_item_window import execute_add_item_window
 from remove_item_window import execute_remove_item_window
@@ -6,6 +7,7 @@ from view_list_window import execute_view_list_window
 import ctypes
 import os
 from window_class import Window
+import traceback
 
 class ManageListWindow(Window):
 
@@ -32,7 +34,7 @@ class ManageListWindow(Window):
         self.buttons_functions = [lambda: self.add_item_button_click(),
                                   lambda: self.remove_item_button_click(), #self.remove_item_button_click(json_data),
                                   lambda: self.view_list_button_click(), #self.view_list_button_click(json_data),
-                                  lambda: print('Button 4'), #self.save_and_exit_button_click(json_data),
+                                  lambda: self.save_and_exit_button_click(),
                                   lambda: self.exit_button_click()]
 
         self.background_image_path = r"\manage_window_images\background.png"
@@ -69,6 +71,33 @@ class ManageListWindow(Window):
         self.window.destroy()
         execute_view_list_window(self.json_data)
         execute_manage_list_window(self.json_data)
+
+    def save_and_exit_button_click(self):
+
+        self.execute_save()
+
+    def execute_save(self):
+
+        try:
+            json_file_name = self.get_json_file_name()
+            self.save_json_file(json_file_name)
+
+        except Exception:
+            print(traceback.print_exc())
+            print('Something went wrong when trying to save the json file.')
+
+        self.exit_button_click()
+
+    def get_json_file_name(self):
+        return filedialog.asksaveasfilename(initialdir=os.path.dirname(__file__),
+                                            defaultextension='.json',
+                                            filetypes=[('json files', '*.json')])
+    
+    def save_json_file(self, json_file_name):
+        if not json_file_name:
+            return
+        with open (json_file_name, 'w') as file:
+            json.dump(self.json_data, file)
 
 
 def execute_manage_list_window(json_data = {}):

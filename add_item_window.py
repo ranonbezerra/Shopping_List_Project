@@ -19,11 +19,11 @@ class AddItemWindow(Window):
         self.entries_paths = [r"\add_item_window_images\img_textBox0.png",
                               r"\add_item_window_images\img_textBox1.png"]
         self.entries_background_sizes = [(196.0, 35.0),
-                                         (215.0, 85.0)]
+                                         (206.5, 85.0)]
         self.entries_places = [(53, 23),
-                               (91, 73)]
+                               (74, 73)]
         self.entries_sizes = [(286, 22),
-                              (248, 22)]
+                              (265, 22)]
 
         self.background_image_path = r"\add_item_window_images\background.png"
         self.background_image_size = (175.0,100.0)
