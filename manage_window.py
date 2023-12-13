@@ -4,8 +4,6 @@ import json
 from add_item_window import execute_add_item_window
 from remove_item_window import execute_remove_item_window
 from view_list_window import execute_view_list_window
-import ctypes
-import os
 from window_class import Window
 import traceback
 
@@ -35,7 +33,7 @@ class ManageListWindow(Window):
                                   lambda: self.remove_item_button_click(), #self.remove_item_button_click(json_data),
                                   lambda: self.view_list_button_click(), #self.view_list_button_click(json_data),
                                   lambda: self.save_and_exit_button_click(),
-                                  lambda: self.exit_button_click()]
+                                  lambda: self.close_window()]
 
         self.background_image_path = r"\manage_window_images\background.png"
         self.background_image_size = (366.5,200.0)
@@ -49,26 +47,29 @@ class ManageListWindow(Window):
 
     def add_item_button_click(self):
 
-        self.window.destroy()
+        self.close_window()
         execute_add_item_window(self.json_data)
         print(self.json_data)
         execute_manage_list_window(self.json_data)
 
     def remove_item_button_click(self):
 
-        if len(self.json_data.keys()):
-            self.window.destroy()
+        if self.list_have_itens():
+            self.close_window()
             execute_remove_item_window(self.json_data)
             print(self.json_data)
             execute_manage_list_window(self.json_data)
         else:
             text  = 'Your shopping list is empty!'
             title = 'Error!'
-            ctypes.windll.user32.MessageBoxW(0, text, title, 0)
+            self.action_window(text, title)
+
+    def list_have_itens(self):
+        return len(self.json_data.keys())
             
     def view_list_button_click(self):
 
-        self.window.destroy()
+        self.close_window()
         execute_view_list_window(self.json_data)
         execute_manage_list_window(self.json_data)
 
@@ -86,10 +87,10 @@ class ManageListWindow(Window):
             print(traceback.print_exc())
             print('Something went wrong when trying to save the json file.')
 
-        self.exit_button_click()
+        self.close_window()
 
     def get_json_file_name(self):
-        return filedialog.asksaveasfilename(initialdir=os.path.dirname(__file__),
+        return filedialog.asksaveasfilename(initialdir=self.path,
                                             defaultextension='.json',
                                             filetypes=[('json files', '*.json')])
     
@@ -109,107 +110,3 @@ def execute_manage_list_window(json_data = {}):
 if __name__ == '__main__':
 
     execute_manage_list_window()
-
-# def btn_save_and_exit(window,dicio):
-#     file_str = filedialog.asksaveasfilename(initialdir=os.path.dirname(__file__),
-#                                           defaultextension='.json',
-#                                           filetypes=[('json files', '*.json')])
-    
-#     if not file_str:
-#         return
-#     with open (file_str, 'w') as file:
-#         json.dump(dicio, file)
-#     window.destroy()
-
-# def window_gerenciando(dicio={}):
-
-#     window_ger = Tk()
-
-#     window_ger.title('Gerenciando lista...')
-
-#     caminho = os.path.dirname(__file__)
-
-#     window_ger.geometry("700x400")
-#     window_ger.configure(bg = "#ffffff")
-#     canvas = Canvas(
-#         window_ger,
-#         bg = "#ffffff",
-#         height = 400,
-#         width = 700,
-#         bd = 0,
-#         highlightthickness = 0,
-#         relief = "ridge")
-#     canvas.place(x = 0, y = 0)
-
-#     background_img = PhotoImage(file = caminho + r"\window_gerenciando_images\background.png")
-#     backgroung = canvas.create_image(
-#         366.5, 200.0,
-#         image=background_img)
-
-#     img0 = PhotoImage(file = caminho + r"\window_gerenciando_images\img0.png")
-#     b0 = Button(
-#         image = img0,
-#         borderwidth = 0,
-#         highlightthickness = 0,
-#         command = lambda: btn_add_item(window_ger,dicio),
-#         relief = "flat")
-
-#     b0.place(
-#         x = 437, y = 47,
-#         width = 192,
-#         height = 62)
-
-#     img1 = PhotoImage(file = caminho + r"\window_gerenciando_images\img1.png")
-#     b1 = Button(
-#         image = img1,
-#         borderwidth = 0,
-#         highlightthickness = 0,
-#         command = lambda: btn_remove_item(window_ger,dicio),
-#         relief = "flat")
-
-#     b1.place(
-#         x = 438, y = 114,
-#         width = 192,
-#         height = 62)
-
-#     img2 = PhotoImage(file = caminho + r"\window_gerenciando_images\img2.png")
-#     b2 = Button(
-#         image = img2,
-#         borderwidth = 0,
-#         highlightthickness = 0,
-#         command = lambda: btn_view_list(window_ger,dicio),
-#         relief = "flat")
-
-#     b2.place(
-#         x = 439, y = 181,
-#         width = 192,
-#         height = 62)
-
-#     img3 = PhotoImage(file = caminho + r"\window_gerenciando_images\img3.png")
-#     b3 = Button(
-#         image = img3,
-#         borderwidth = 0,
-#         highlightthickness = 0,
-#         command = lambda: btn_save_and_exit(window_ger,dicio),
-#         relief = "flat")
-
-#     b3.place(
-#         x = 437, y = 248,
-#         width = 192,
-#         height = 62)
-
-#     img4 = PhotoImage(file = caminho + r"\window_gerenciando_images\img4.png")
-#     b4 = Button(
-#         image = img4,
-#         borderwidth = 0,
-#         highlightthickness = 0,
-#         command = lambda: btn_exit(window_ger),
-#         relief = "flat")
-
-#     b4.place(
-#         x = 437, y = 315,
-#         width = 192,
-#         height = 62)
-
-#     window_ger.resizable(False, False)
-#     window_ger.mainloop()

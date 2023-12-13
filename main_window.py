@@ -2,7 +2,6 @@ from window_class import Window
 from manage_window import execute_manage_list_window
 from tkinter import filedialog
 from tkinter import *
-import os
 import json
 
 class MainWindow(Window):
@@ -23,7 +22,7 @@ class MainWindow(Window):
                               (192, 62)]
         self.buttons_functions = [lambda: self.new_list_button_click(),
                                   lambda: self.open_file_button_click(),
-                                  lambda: self.exit_button_click()]
+                                  lambda: self.close_window()]
 
         self.background_image_path = r"\main_window_images\background.png"
         self.background_image_size = (335.0,200.0)
@@ -37,20 +36,17 @@ class MainWindow(Window):
 
     def new_list_button_click(self):
 
-        self.window.destroy()
-
-        json_data = {}
-        execute_manage_list_window(json_data)
-
+        self.close_window()
+        execute_manage_list_window()
         execute_main_window()
 
     def open_file_button_click(self):
-        file_str = filedialog.askopenfilename(initialdir=os.path.dirname(__file__),
+        file_str = filedialog.askopenfilename(initialdir=self.path,
                                               title='Open JSON file',
                                               filetypes=[('json files','*.json')])
         if file_str:
             with open(file_str) as file:
-                self.window.destroy()
+                self.close_window()
                 execute_manage_list_window(json.load(file))
 
 

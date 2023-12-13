@@ -1,5 +1,4 @@
 from tkinter import *
-import ctypes
 from window_class import Window
 
 class AddItemWindow(Window):
@@ -72,7 +71,7 @@ class AddItemWindow(Window):
     def user_wants_to_increment(self,item_entry, amount_entry):
         text  = 'Item already registered! Do you wish to increment the value ({}) to the item {}? Current amount: {}'.format(amount_entry,item_entry, self.json_data[item_entry])
         title = 'Item already registered!'
-        return 1 == ctypes.windll.user32.MessageBoxW(0, text, title, 1)
+        return 1 == self.action_window(text, title, return_value=1)
     
     def create_add_item_window(self):
             
